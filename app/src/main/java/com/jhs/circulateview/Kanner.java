@@ -51,12 +51,20 @@ public class Kanner extends FrameLayout {
         iv_dots = new ArrayList<ImageView>();
     }
 
+    /**
+     * 设置一个ImagesUrl的数组
+     * @param imagesUrl
+     */
     public void setImagesUrl(String[] imagesUrl) {
         initLayout();
         initImgFromNet(imagesUrl);
         showTime();
     }
 
+    /**
+     * 设置一个iamgeRes的数组
+     * @param imagesRes
+     */
     public void setImagesRes(int[] imagesRes) {
         initLayout();
         initImgFromRes(imagesRes);
@@ -81,11 +89,11 @@ public class Kanner extends FrameLayout {
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             params.leftMargin = 5;
             params.rightMargin = 5;
-            iv_dot.setImageResource(R.drawable.dot_blur);
+            iv_dot.setImageResource(R.drawable.shape_dot_blur);
             ll_dot.addView(iv_dot, params);
             iv_dots.add(iv_dot);
         }
-        iv_dots.get(0).setImageResource(R.drawable.dot_focus);
+        iv_dots.get(0).setImageResource(R.drawable.shape_dot_focus);
 
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
@@ -111,11 +119,11 @@ public class Kanner extends FrameLayout {
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             params.leftMargin = 5;
             params.rightMargin = 5;
-            iv_dot.setImageResource(R.drawable.dot_blur);
+            iv_dot.setImageResource(R.drawable.shape_dot_blur);
             ll_dot.addView(iv_dot, params);
             iv_dots.add(iv_dot);
         }
-        iv_dots.get(0).setImageResource(R.drawable.dot_focus);
+        iv_dots.get(0).setImageResource(R.drawable.shape_dot_focus);
 
         for (int i = 0; i <= count + 1; i++) {
             ImageView iv = new ImageView(context);
@@ -168,7 +176,7 @@ public class Kanner extends FrameLayout {
                     handler.post(task);
                 } else {
                     vp.setCurrentItem(currentItem);
-                    handler.postDelayed(task, 3000);
+                    handler.postDelayed(task, 5000);
                 }
             } else {
                 handler.postDelayed(task, 5000);
@@ -213,13 +221,13 @@ public class Kanner extends FrameLayout {
         @Override
         public void onPageScrollStateChanged(int arg0) {
             switch (arg0) {
-                case 1:
+                case ViewPager.SCROLL_STATE_DRAGGING:
                     isAutoPlay = false;
                     break;
-                case 2:
-                    isAutoPlay = true;
+                case ViewPager.SCROLL_STATE_SETTLING://松开手ViewPager恢复的过程
+                    isAutoPlay = false;
                     break;
-                case 0:
+                case ViewPager.SCROLL_STATE_IDLE:
                     if (vp.getCurrentItem() == 0) {
                         vp.setCurrentItem(count, false);
                     } else if (vp.getCurrentItem() == count + 1) {
@@ -239,9 +247,9 @@ public class Kanner extends FrameLayout {
         public void onPageSelected(int arg0) {
             for (int i = 0; i < iv_dots.size(); i++) {
                 if (i == arg0 - 1) {
-                    iv_dots.get(i).setImageResource(R.drawable.dot_focus);
+                    iv_dots.get(i).setImageResource(R.drawable.shape_dot_focus);
                 } else {
-                    iv_dots.get(i).setImageResource(R.drawable.dot_blur);
+                    iv_dots.get(i).setImageResource(R.drawable.shape_dot_blur);
                 }
             }
         }
