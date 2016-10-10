@@ -31,6 +31,8 @@ public class Kanner extends FrameLayout {
     private List<ImageView> iv_dots;
     private Handler handler = new Handler();
 
+    private long delaytime;
+
     public Kanner(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.context = context;
@@ -49,10 +51,12 @@ public class Kanner extends FrameLayout {
     private void initData() {
         imageViews = new ArrayList<ImageView>();
         iv_dots = new ArrayList<ImageView>();
+        delaytime = 5000;
     }
 
     /**
      * 设置一个ImagesUrl的数组
+     *
      * @param imagesUrl
      */
     public void setImagesUrl(String[] imagesUrl) {
@@ -63,12 +67,21 @@ public class Kanner extends FrameLayout {
 
     /**
      * 设置一个iamgeRes的数组
+     *
      * @param imagesRes
      */
     public void setImagesRes(int[] imagesRes) {
         initLayout();
         initImgFromRes(imagesRes);
         showTime();
+    }
+
+    /**
+     * 设置轮播切换间隔，默认为5000（5秒）
+     * @param time
+     */
+    public void setDelaytime(long time) {
+        this.delaytime = time;
     }
 
     private void initLayout() {
@@ -125,7 +138,7 @@ public class Kanner extends FrameLayout {
         }
         iv_dots.get(0).setImageResource(R.drawable.shape_dot_focus);
 
-        for (int i = 0; i <= count + 1; i++) {
+        for (int i = 0; i < count + 2; i++) {
             ImageView iv = new ImageView(context);
             iv.setScaleType(ScaleType.FIT_XY);
             iv.setBackgroundResource(R.drawable.loading);
@@ -151,7 +164,7 @@ public class Kanner extends FrameLayout {
 
     private void startPlay() {
         isAutoPlay = true;
-        handler.postDelayed(task, 3000);
+        handler.postDelayed(task, delaytime);
     }
 
     //配置Universal-image-loader
@@ -176,10 +189,10 @@ public class Kanner extends FrameLayout {
                     handler.post(task);
                 } else {
                     vp.setCurrentItem(currentItem);
-                    handler.postDelayed(task, 5000);
+                    handler.postDelayed(task, delaytime);
                 }
             } else {
-                handler.postDelayed(task, 5000);
+                handler.postDelayed(task, delaytime);
             }
         }
     };
