@@ -14,23 +14,19 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Kanner extends FrameLayout {
     private int count;
-    private ImageLoader mImageLoader;
+    //private ImageLoader mImageLoader;
     private List<ImageView> imageViews;
     private Context context;
     private ViewPager vp;
     private boolean isAutoPlay;
     private int currentItem;
-    private int delayTime;
     private LinearLayout ll_dot;
     private List<ImageView> iv_dots;
     private Handler handler = new Handler();
@@ -38,7 +34,7 @@ public class Kanner extends FrameLayout {
     public Kanner(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.context = context;
-        initImageLoader(context);//这个放到Application中去
+        //  initImageLoader(context);//这个放到Application中去
         initData();
     }
 
@@ -53,7 +49,6 @@ public class Kanner extends FrameLayout {
     private void initData() {
         imageViews = new ArrayList<ImageView>();
         iv_dots = new ArrayList<ImageView>();
-        delayTime = 2000;
     }
 
     public void setImagesUrl(String[] imagesUrl) {
@@ -127,11 +122,11 @@ public class Kanner extends FrameLayout {
             iv.setScaleType(ScaleType.FIT_XY);
             iv.setBackgroundResource(R.drawable.loading);
             if (i == 0) {
-                mImageLoader.displayImage(imagesUrl[count - 1], iv);
+                ImageLoader.getInstance().displayImage(imagesUrl[count - 1], iv);
             } else if (i == count + 1) {
-                mImageLoader.displayImage(imagesUrl[0], iv);
+                ImageLoader.getInstance().displayImage(imagesUrl[0], iv);
             } else {
-                mImageLoader.displayImage(imagesUrl[i - 1], iv);
+                ImageLoader.getInstance().displayImage(imagesUrl[i - 1], iv);
             }
             imageViews.add(iv);
         }
@@ -148,18 +143,19 @@ public class Kanner extends FrameLayout {
 
     private void startPlay() {
         isAutoPlay = true;
-        handler.postDelayed(task, 2000);
+        handler.postDelayed(task, 3000);
     }
 
-    public void initImageLoader(Context context) {
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                context).threadPriority(Thread.NORM_PRIORITY - 2)
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .writeDebugLogs().build();
-        ImageLoader.getInstance().init(config);
-        mImageLoader = ImageLoader.getInstance();
-    }
+    //配置Universal-image-loader
+//    public void initImageLoader(Context context) {
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+//                context).threadPriority(Thread.NORM_PRIORITY - 2)
+//                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+//                .tasksProcessingOrder(QueueProcessingType.LIFO)
+//                .writeDebugLogs().build();
+//        ImageLoader.getInstance().init(config);
+//        mImageLoader = ImageLoader.getInstance();
+//    }
 
     private final Runnable task = new Runnable() {
 
@@ -194,7 +190,7 @@ public class Kanner extends FrameLayout {
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            ImageView imageView=imageViews.get(position);
+            ImageView imageView = imageViews.get(position);
             imageView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -251,7 +247,6 @@ public class Kanner extends FrameLayout {
         }
 
     }
-
 
 
     private KannerItemOnClickLister kannerItemOnClickLister;
