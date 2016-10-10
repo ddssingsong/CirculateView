@@ -193,8 +193,15 @@ public class Kanner extends FrameLayout {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            container.addView(imageViews.get(position));
+        public Object instantiateItem(ViewGroup container, final int position) {
+            ImageView imageView=imageViews.get(position);
+            imageView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    kannerItemOnClickLister.OnKannerItemClickListener(position);
+                }
+            });
+            container.addView(imageView);
             return imageViews.get(position);
         }
 
@@ -243,6 +250,18 @@ public class Kanner extends FrameLayout {
             }
         }
 
+    }
+
+
+
+    private KannerItemOnClickLister kannerItemOnClickLister;
+
+    public void setKannerItemOnClickLister(KannerItemOnClickLister kannerItemOnClickLister) {
+        this.kannerItemOnClickLister = kannerItemOnClickLister;
+    }
+
+    public interface KannerItemOnClickLister {
+        void OnKannerItemClickListener(int position);
     }
 
 }
