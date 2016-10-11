@@ -84,6 +84,23 @@ public class Kanner extends FrameLayout {
         this.delaytime = time;
     }
 
+
+    /**
+     * 开始滑动
+     */
+    public void start(){
+        startPlay();
+    }
+
+    /**
+     * 停止滑动
+     */
+    public void stop(){
+        isAutoPlay = false;
+        handler.removeCallbacks(task);
+    }
+
+
     private void initLayout() {
         imageViews.clear();
         View view = LayoutInflater.from(context).inflate(
@@ -234,13 +251,13 @@ public class Kanner extends FrameLayout {
         @Override
         public void onPageScrollStateChanged(int arg0) {
             switch (arg0) {
-                case ViewPager.SCROLL_STATE_DRAGGING:
+                case ViewPager.SCROLL_STATE_DRAGGING: //被拖动的时候进行的方法
                     isAutoPlay = false;
                     break;
                 case ViewPager.SCROLL_STATE_SETTLING://松开手ViewPager恢复的过程
                     isAutoPlay = false;
                     break;
-                case ViewPager.SCROLL_STATE_IDLE:
+                case ViewPager.SCROLL_STATE_IDLE://Viewpager处于空闲状态
                     if (vp.getCurrentItem() == 0) {
                         vp.setCurrentItem(count, false);
                     } else if (vp.getCurrentItem() == count + 1) {
